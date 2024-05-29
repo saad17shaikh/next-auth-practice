@@ -13,36 +13,36 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { login, register } from "@/lib/server-action";
+import { login } from "@/lib/server-action";
 import CardWrapper from "@/app/_components/CardWrapper";
 import FormInput from "@/app/_components/FormInput";
-export const RegisterSchema = z.object({
+export const LoginSchema = z.object({
   email: z.string().email({
     message: "Email is required",
   }),
   password: z.string().min(6, {
     message: "Minimum 6 characters required",
   }),
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
+  
 });
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState("");
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
-      name: "",
+  
     },
   });
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
-      register(values).then((data) => {
+      login(values).then((data) => {
+        // setMessage(data.message);
         console.log(data)
+
       });
     });
   };
@@ -52,14 +52,7 @@ const RegisterForm = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
-              <FormInput
-                form={form}
-                label="Name"
-                name="name"
-                placeholder=""
-                type="text"
-                isRequired
-              />
+  
               <FormInput
                 form={form}
                 label="Email"
@@ -90,4 +83,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

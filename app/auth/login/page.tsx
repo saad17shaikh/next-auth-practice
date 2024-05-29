@@ -1,10 +1,11 @@
 import React from 'react'
+import LoginForm from './login-form'
 
 const page = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <LoginForm/>
+    </>
   )
 }
 
